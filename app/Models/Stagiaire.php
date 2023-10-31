@@ -21,6 +21,11 @@ class Stagiaire extends Model implements Authenticatable
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="' . $this->cv . '"',
             ]);
+            // $headers = [
+            //     'Content-Type' => 'application/pdf',
+            //     'Content-Disposition' => 'inline; filename="' . $fileName . '"',
+            // ];
+            // return response()->file($file, $headers);
         }
         return redirect()->back()->with(["error" => "Pas de CV trouvé."]);
     }
@@ -28,4 +33,17 @@ class Stagiaire extends Model implements Authenticatable
     {
         return $this->belongsTo(Etablissement::class, 'etablissement_id');
     }
+
+    // public function viewCv(Request $request)
+    // {
+    //     if (Storage::disk('local')->exists($fileName)) {
+    //         $file = storage_path("app/" . $fileName);
+    //         $headers = [
+    //             'Content-Type' => 'application/pdf',
+    //             'Content-Disposition' => 'inline; filename="' . $fileName . '"',
+    //         ];
+    //         return response()->file($file, $headers);
+    //     } else
+    //         return redirect()->back()->with('error', 'CV file not found.');
+    // }
 }

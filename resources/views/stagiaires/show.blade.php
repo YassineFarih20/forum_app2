@@ -45,7 +45,7 @@
         }
     </style>
     <div class="container">
-        <a href="{{ route('stagiaires.index') }}">back</a>
+        {{-- <a href="{{ route('stagiaires.index') }}">back</a> --}}
         @if ($stagiaire)
             <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">

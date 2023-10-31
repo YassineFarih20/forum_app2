@@ -3,8 +3,13 @@
         <div class="card-header">
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <h3>Candidats qui ont postulé </h3>
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ route('admin.backup.exportStgPostule') }}" class=" btn btn-primary">
+                        <i class="feather icon-download"></i>
+                        Export</a>
                 </div>
             </div>
 
@@ -16,7 +21,8 @@
                     <table class="table table-hover m-b-0">
                         <thead>
                             <tr>
-                                <th><span>Stagiaire</span></th>
+                                <th><span>Matricule</span></th>
+                                <th><span>Nom complet</span></th>
                                 <th><span>Entreprise</span></th>
                                 <th><span>Etablissement</span></th>
                                 <th><span>Status</span></th>
@@ -25,6 +31,7 @@
                         <tbody>
                             @foreach ($interviewData as $data)
                                 <tr>
+                                    <td>{{ $data->matricule }}</td>
                                     <td>{{ $data->nom . ' ' . $data->prenom }}</td>
                                     <td>{{ $data->entreprise }}</td>
                                     <td>{{ $data->etablissement }}</td>

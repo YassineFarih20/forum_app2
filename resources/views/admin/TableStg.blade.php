@@ -3,9 +3,26 @@
         <div class="card-header">
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <h3>{{ isset($title) ? $title : 'List stagiaires' }}</h3>
                 </div>
+                @isset($temp)
+                    @if ($temp)
+                        <div class="col-md-2">
+                            <a href="{{ route('admin.backup.exportStgParticipants') }}" class=" btn btn-primary">
+                                <i class="feather icon-download"></i>
+                                Export</a>
+
+                        </div>
+                    @else
+                        <div class="col-md-2">
+                            <a href="{{ route('admin.backup.exportStgNonConfirme') }}" class=" btn btn-primary">
+                                <i class="feather icon-download"></i>
+                                Export</a>
+
+                        </div>
+                    @endif
+                @endisset
             </div>
 
         </div>

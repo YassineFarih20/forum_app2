@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocalizationController;
@@ -35,6 +36,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/dashboard', [AdminController::class, "dashboard"])->name('dashboard');
     Route::get('/analytics', [AdminController::class, "analytics"])->name('analytics');
     Route::post('/auth', [AdminController::class, "handleLogin"])->name('handleLogin');
+    Route::get('/message', [AdminController::class, "message"])->name('message');
     Route::post('/logout', [AdminController::class, "logout"])->name('logout');
     Route::group(['prefix' => 'backup', 'as' => 'backup.'], function () {
         Route::get('/', [BackupController::class, "index"])->name('index');
@@ -44,15 +46,24 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/exportEntreprises', [BackupController::class, "exportEntreprises"])->name('exportEntreprises');
         Route::post('/importEtablissements', [BackupController::class, "importEtablissements"])->name('importEtablissements');
         Route::get('/exportEtablissements', [BackupController::class, "exportEtablissements"])->name('exportEtablissements');
+        Route::get('/exportEFP', [BackupController::class, "exportEFP"])->name('exportEFP');
+        Route::get('/exportStgPostule', [BackupController::class, "exportStgPostule"])->name('exportStgPostule');
+        Route::get('/exportStgParticipants', [BackupController::class, "exportStgParticipants"])->name('exportStgParticipants');
+        Route::get('/exportStgNonConfirme', [BackupController::class, "exportStgNonConfirme"])->name('exportStgNonConfirme');
     });
     Route::group(['prefix' => 'ajouter', 'as' => 'ajouter.'], function () {
         Route::get('/stagiaire', [AdminController::class, "ajouterStagiaire"])->name('ajouter_S');
         Route::get('/entreprise', [AdminController::class, "ajouterEntreprise"])->name('ajouter_E');
         Route::get('/admin', [AdminController::class, "ajouterAdmin"])->name('ajouter_A');
+        Route::get('/etablissement', [AdminController::class, "ajouterEtab"])->name('ajouter_etab');
         Route::post('/addAdmin', [AdminController::class, "add_a"])->name('add_A');
         Route::post('/addEntreprises', [AdminController::class, "add_e"])->name('add_E');
+        Route::post('/addStagiaire', [AdminController::class, "add_s"])->name('add_S');
+        Route::post('/addEtab', [AdminController::class, "add_etab"])->name('add_Etab');
     });
 });
+
+Route::post('/SendMessge', [MessageController::class, "SendMessge"])->name('sendMessge');
 
 Route::post('/apply-for-interview/{stagiaire}', [ApplicationController::class, "applyForInterview"])->name('apply-for-interview');
 
@@ -76,7 +87,6 @@ Route::post('/cv/view', [AdminController::class, 'viewCv'])->name('viewCV');
 Route::resources([
     'stagiaires' => stagiaireController::class,
     'entreprises' => entrepriseController::class,
-
 ]);
 
 

@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Stagiaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class StagiaireController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("auth");
+        // dd(auth('entreprise')->user());
+
+        // dd(Session::get('authEntreprise'));
+
+        // session('authEntreprise') ? $this->middleware("auth:entreprise") : $this->middleware("auth");
     }
     public function index()
     {

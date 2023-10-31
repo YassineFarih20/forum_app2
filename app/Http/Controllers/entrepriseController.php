@@ -7,15 +7,18 @@ use App\Models\Entretien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+
 
 use Illuminate\Validation\ValidationException;
 
 class EntrepriseController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware("auth");
-    // }
+    public function __construct()
+    {
+        $this->middleware("auth")->except(['login', 'loginIndex']);
+    }
+
     public function index()
     {
         return view("entreprises.index", ["entreprises" => Entreprise::all()]);
@@ -81,8 +84,6 @@ class EntrepriseController extends Controller
             $user = Auth::guard('entreprise')->user();
             $user->status = 1;
             $user->save();
-
-
             return redirect()->route('entreprise.dashboard');
         }
 
@@ -97,7 +98,6 @@ class EntrepriseController extends Controller
     }
     public function dashboard()
     {
-
         $entreprise = Auth::guard('entreprise')->user();
         $entrepriseName = $entreprise->nom;
         $logo = $entreprise->logo;

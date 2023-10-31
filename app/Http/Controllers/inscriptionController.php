@@ -44,7 +44,9 @@ class inscriptionController extends Controller
 
 
         $stagiaire ? Session::put('currentStagiaire', $stagiaire) : Session::forget('currentStagiaire');
-        $this->entretienSession();
+        if ($stagiaire) $this->entretienSession();
+        else
+            redirect()->back();
     }
     public function enregistrerInscription(Request $request)
     {

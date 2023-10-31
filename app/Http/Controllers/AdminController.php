@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Etablissement;
 use App\Models\Stagiaire;
 use App\Models\Admin;
 use App\Models\Entreprise;
 use App\Models\Entretien;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +42,7 @@ class AdminController extends Controller
 
         return view('admin.index', ['temp' => 1, 'stg' => $stg, 'entreprises' => $entreprises, 'loginaction' => $loginaction, 'Entretien' => $entretien]);
     }
+
     public function handleLogin(Request $request)
     {
         return Auth::attempt($request->only('login', 'password')) ? redirect()->route('admin.dashboard') : back()->withErrors(['login' => 'Invalid credentials']);
@@ -59,19 +62,20 @@ class AdminController extends Controller
         return Storage::disk('resumes')->exists($filePath) ? Storage::disk("resumes")->download($filePath) : redirect()->back()->with('error', 'CV file not found.');
     }
 
-    public function viewCv(Request $request)
-    {
-        $fileName = $request->input("fileName");
-        if (Storage::disk('local')->exists($fileName)) {
-            $file = storage_path("app/" . $fileName);
-            $headers = [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . $fileName . '"',
-            ];
-            return response()->file($file, $headers);
-        } else
-            return redirect()->back()->with('error', 'CV file not found.');
-    }
+    // public function viewCv(Request $request)
+    // {
+    //     $fileName = $request->input("fileName");
+    //     if (Storage::disk('local')->exists($fileName)) {
+    //         $file = storage_path("app/" . $fileName);
+    //         $headers = [
+    //             'Content-Type' => 'application/pdf',
+    //             'Content-Disposition' => 'inline; filename="' . $fileName . '"',
+    //         ];
+    //         return response()->file($file, $headers);
+    //     } else
+    //         return redirect()->back()->with('error', 'CV file not found.');
+    // }
+
     public function deleteStudent($id)
     {
         $student = Stagiaire::find($id);
@@ -84,11 +88,12 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
     public function ajouterAdmin()
     {
-
         return view('admin.index', ['temp' => 2]);
     }
+
     public function analytics()
     {
         $stagiaires = count(Stagiaire::all());
@@ -121,12 +126,15 @@ class AdminController extends Controller
             ->join('stagiaires as s', 'ent.stagiaire_id', '=', 's.id')
             ->join('etablissements as efp', 'efp.id', '=', 's.etablissement_id')
             ->select(
+                's.matricule',
                 's.nom',
                 's.prenom',
                 'e.raisonabregee as entreprise',
                 'efp.nom as etablissement',
                 'ent.status',
-            )->get();
+            )->orderBy('s.nom')
+            ->get();
+
         return view('admin.index', [
             'temp' => 7,
             'stagiaires' => $stagiaires,
@@ -141,16 +149,12 @@ class AdminController extends Controller
             'interviewData' => $interviewData,
         ]);
     }
+
     public function ajouterEntreprise()
     {
-
         return view('admin.index', ['temp' => 3]);
     }
-    public function ajouterStagiaire()
-    {
 
-        return view('admin.index', ['temp' => 4]);
-    }
     public function add_a(Request $request)
     {
 
@@ -186,11 +190,78 @@ class AdminController extends Controller
         $entreprises->activite = strip_tags($request->input('activite'));
         $entreprises->logo = strip_tags($request->input('logo'));
         $entreprises->web = strip_tags($request->input('web'));
-        // $entreprises->password = Hash::make(strip_tags($request->input('web')));
         $entreprises->email = strip_tags($request->input('email'));
         $entreprises->stand = strip_tags($request->input('stand'));
         $entreprises->save();
 
         return redirect()->back();
+    }
+
+    public function add_s(Request $request)
+    {
+
+        $request->validate([
+            'matricule' => 'required|string|max:255',
+            'cin' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'dateNaissance' => 'required|date_format:Y-m-d',
+            'email' => 'required|email|max:255',
+            'telephone' => 'required|numeric|min:10',
+            'filiere' => 'required|string|max:255',
+            'sexe' => 'required|in:F,H',
+        ]);
+        if (isset($request)) {
+
+            $stg = new Stagiaire();
+            $stg->matricule = strip_tags($request->matricule);
+            $stg->cin = strip_tags($request->cin);
+            $stg->nom = strip_tags($request->nom);
+            $stg->prenom = strip_tags($request->prenom);
+            $stg->dateNaissance = strip_tags($request->dateNaissance);
+            $stg->email = strip_tags($request->email);
+            $stg->telephone = strip_tags($request->telephone);
+            $stg->filiere = strip_tags($request->filiere);
+            $stg->sexe = strip_tags($request->sexe);
+            $stg->etablissement_id = 1;
+            $stg->save();
+
+            return redirect()->back();
+        }
+
+        return view('/');
+    }
+
+    public function add_etab(Request $request)
+    {
+
+        $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+        if (isset($request)) {
+
+            $stg = new Etablissement();
+            $stg->nom = strip_tags($request->nom);
+            $stg->save();
+
+            return redirect()->back();
+        }
+
+        return view('/');
+    }
+
+    public function ajouterEtab()
+    {
+        return view('admin.index', ['temp' => 6]);
+    }
+
+    public function ajouterStagiaire()
+    {
+        return view('admin.index', ['temp' => 5, 'etabs' => Etablissement::all()]);
+    }
+
+    public function message()
+    {
+        return view('admin.index', ['temp' => 8, 'msgs' => Message::all()]);
     }
 }

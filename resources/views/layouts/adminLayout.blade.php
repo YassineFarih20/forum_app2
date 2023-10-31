@@ -19,10 +19,10 @@
              <div class="loader-fill"></div>
          </div>
      </div>
-
-     @include('includes/adminNavMenu')
-     @include('includes/adminHeader')
-
+     @if (Auth::user()->hasRole(1))
+         @include('includes/adminNavMenu')
+         @include('includes/adminHeader')
+     @endif
      @yield('content')
  </body>
 

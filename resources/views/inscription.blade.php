@@ -33,12 +33,12 @@
                     <div class="col-md-10">
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control border-0" name="cin" placeholder="CIN ?"
+                                <input type="text" class="form-control border-0" name="cin" placeholder="CIN"
                                     value="{{ isset($stagiaire) ? $stagiaire->cin : '' }}" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control border-0" name="datenaissance"
-                                    placeholder="Date naissance ?"
+                                <input type="date" class="form-control border-0" name="datenaissance"
+                                    placeholder="Date naissance"
                                     value="{{ isset($stagiaire) ? $stagiaire->dateNaissance : '' }}" />
                             </div>
                         </div>
@@ -111,16 +111,15 @@
                                         <label for="email">Email</label>
                                     </div>
                                 </div>
-                                @if ($stagiaire->status === 0)
-                                    <div class="col-md-6 pe-md-5">
-                                        <div class="form-floating">
-                                            <input class="form-control" type="file" name="cv"
-                                                accept=".pdf, .doc, .docx">
-                                            @error('cv')
-                                                {{ $message }}
-                                            @enderror
-                                        </div>
+                                <div class="col-md-6 pe-md-5">
+                                    <div class="form-floating">
+                                        <input class="form-control" type="file" name="cv" accept=".pdf, .doc, .docx">
+                                        @error('cv')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
+                                </div>
+                                @if ($stagiaire->status === 0)
                                     <div class="col-md-4 m-auto mt-4">
                                         <div class="form-floating">
                                             <button class="btn btn-primary w-100 py-3" type="submit">S'inscrire</button>
@@ -136,6 +135,7 @@
                                     <span> <b>Vous &egrave;tes d&eacute;ja inscrit(e) </b> </span>
                                     <a class="btn btn-success" href="{{ route('reservationrdv') }}">Postuler pour une
                                         entreprise</a>
+
                                     {{-- <a class="btn btn-danger" href="{{ route('invitation') }}">Annuler inscription</a> --}}
                                 </div>
                                 {{-- <div class="col-4 offset"></div> --}}
@@ -147,9 +147,14 @@
                                     <div class="col-3 offset"> </div> --}}
 
                             </div>
-                            @endif
                         </div>
                     </form>
+                    <form class="m-auto col-2" action="{{ route('viewCV') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="fileName" value={{ $stagiaire->cv }}>
+                        <button class="btn w-100 btn-info text-white">voir cv</button>
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>
