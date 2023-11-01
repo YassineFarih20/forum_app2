@@ -2,15 +2,11 @@
     <div class="card table-card">
         <div class="card-header">
 
-            <div class="row">
-                <div class="col-md-10">
-                    <h3>Candidats qui ont postulé </h3>
-                </div>
-                <div class="col-md-2">
-                    <a href="{{ route('admin.backup.exportStgPostule') }}" class=" btn btn-primary">
-                        <i class="feather icon-download"></i>
-                        Export</a>
-                </div>
+            <div class="d-flex justify-content-between">
+                <h3>Candidats qui ont postulé </h3>
+                <a href="{{ route('admin.backup.exportStgPostule') }}" class=" btn btn-primary">
+                    <i class="feather icon-download"></i>
+                    Export</a>
             </div>
 
         </div>

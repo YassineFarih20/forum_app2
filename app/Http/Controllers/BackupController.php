@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\StagiairesDidNotConfirmExport;
 use App\Exports\StagiairesParticipantsExport;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\imports\StagiairesImport;
@@ -21,6 +22,7 @@ class BackupController extends Controller
     {
         $this->middleware('role:1');
         $this->middleware('auth');
+        $this->middleware('validateImport')->only(["importStagiaires", "importEtablissements", "importEntreprises"]);
     }
     public function index()
     {
@@ -30,8 +32,13 @@ class BackupController extends Controller
     public function importStagiaires(Request $request)
     {
         $file = $request->file('file');
-        Excel::import(new StagiairesImport, $file);
-        return back()->with('success', 'Stagiaires imported successfully.');
+        try {
+            Excel::import(new StagiairesImport, $file);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) return back()->withErrors(['backupAlert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return back()->withErrors(['backupAlert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
+        }
+        return back()->withErrors(['backupAlert' => "Stagiaires imported successfully", 'style' => 'alert-primary']);
     }
 
     public function exportStagiaires()
@@ -41,8 +48,13 @@ class BackupController extends Controller
     public function importEtablissements(Request $request)
     {
         $file = $request->file('file');
-        Excel::import(new EtablissementsImport, $file);
-        return back()->with('success', 'etablissements imported successfully.');
+        try {
+            Excel::import(new EtablissementsImport, $file);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) return back()->withErrors(['backupAlert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return back()->withErrors(['backupAlert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
+        }
+        return back()->withErrors(['backupAlert' => "Etablissements imported successfully", 'style' => 'alert-primary']);
     }
 
     public function exportEtablissements()
@@ -53,8 +65,13 @@ class BackupController extends Controller
     public function importEntreprises(Request $request)
     {
         $file = $request->file('file');
-        Excel::import(new EntreprisesImport, $file);
-        return back()->with('success', 'Entreprises imported successfully.');
+        try {
+            Excel::import(new EntreprisesImport, $file);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) return back()->withErrors(['backupAlert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return back()->withErrors(['backupAlert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
+        }
+        return back()->withErrors(['backupAlert' => "Etablissements imported successfully", 'style' => 'alert-primary']);
     }
 
     public function exportEntreprises()

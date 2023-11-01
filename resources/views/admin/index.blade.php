@@ -139,11 +139,6 @@
 
             {{-- part admin --}}
             @case(2)
-                <style>
-                    input {
-                        background: white !important;
-                    }
-                </style>
                 <div class="pcoded-main-container">
                     <div class="pcoded-wrapper">
                         <div class="pcoded-content">
@@ -167,28 +162,40 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <form method="POST" action="{{ route('admin.ajouter.add_A') }}">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label for="name">Admin name</label>
-                                                <input type="text" class="form-control" id="name"
-                                                    aria-describedby="emailHelp" placeholder="Enter Admin Name" name="name">
-                                                @error('name')
-                                                    <bold class="text-danger">{{ $message }}</bold>
-                                                @enderror
+                                        @if ($errors->has('alert'))
+                                            <div class="alert {{ $errors->first('style') }}">{{ $errors->first('alert') }}</div>
+                                        @endif
+                                        <div class="row">
+                                            <div class="offset col-3"></div>
+                                            <form method="POST" class="col-6" action="{{ route('admin.ajouter.add_A') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="name">Name</label>
+                                                    <input type="text" class="form-control" id="name"
+                                                        placeholder="Enter Admin Name" name="name">
+                                                    @error('name')
+                                                        <bold class="text-danger">{{ $message }}</bold>
+                                                    @enderror
 
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Password</label>
-                                                <input type="password" class="form-control" id="exampleInputPassword1"
-                                                    placeholder="Password" name="password">
-                                                @error('password')
-                                                    <bold class="text-danger">{{ $message }}</bold>
-                                                @enderror
-                                            </div>
-                                            <input type="number" class="d-none" value="1" name="role">
-                                            <button type="submit" class="btn mt-3 btn-primary">Ajouter</button>
-                                        </form>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword1"
+                                                        placeholder="Password" name="password">
+                                                    @error('password')
+                                                        <bold class="text-danger">{{ $message }}</bold>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="role">Role</label>
+                                                    <select class="form-select" name="role" id="role">
+                                                        <option value="0" selected>Coordonateur</option>
+                                                        <option value="1">Administrateur</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn mt-3 btn-primary">Ajouter</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -199,11 +206,6 @@
 
             {{-- part entreprises --}}
             @case(3)
-                <style>
-                    input {
-                        background: white !important;
-                    }
-                </style>
                 <div class="pcoded-main-container text-capitalize">
                     <div class="pcoded-wrapper">
                         <div class="pcoded-content">
@@ -227,14 +229,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <form method="POST" action="{{ route('admin.ajouter.add_E') }}"> @csrf
+                                        @if ($errors->has('alert'))
+                                            <div class="alert {{ $errors->first('style') }}">{{ $errors->first('alert') }}</div>
+                                        @endif
+
+                                        <form method="POST" action="{{ route('admin.ajouter.add_E') }}">
+                                            @csrf
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="name">nom :</label>
-                                                        <input type="text" class="form-control" id="name"
-                                                            aria-describedby="emailHelp" placeholder="nom" name="nom">
-                                                        @error('name')
+                                                        <label for="raisonsociale">Raison sociale :</label>
+                                                        <input type="text" class="form-control" id="raisonsociale"
+                                                            value="{{ old('raisonsociale') }}" placeholder="raison sociale"
+                                                            name="raisonsociale">
+                                                        @error('raisonsociale')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
 
@@ -242,11 +250,38 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="representant">representant :</label>
+                                                        <label for="raisonabregee">Raison abregee :</label>
+                                                        <input type="text" class="form-control" id="raisonabregee"
+                                                            value="{{ old('raisonabregee') }}" placeholder="Raison abregee"
+                                                            name="raisonabregee">
+                                                        @error('raisonabregee')
+                                                            <bold class="text-danger">{{ $message }}</bold>
+                                                        @enderror
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="representant">Representant :</label>
                                                         <input type="text" class="form-control" id="representant"
-                                                            aria-describedby="emailHelp" placeholder="representant"
+                                                            value="{{ old('representant') }}" placeholder="Representant"
                                                             name="representant">
                                                         @error('representant')
+                                                            <bold class="text-danger">{{ $message }}</bold>
+                                                        @enderror
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Email :</label>
+                                                        <input type="email" class="form-control" id="email"
+                                                            value="{{ old('email') }}" placeholder="example@mail.com"
+                                                            name="email">
+                                                        @error('email')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
 
@@ -256,10 +291,11 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="activite">activite :</label>
-                                                        <input type="text" class="form-control" id="activite"
-                                                            aria-describedby="emailHelp" placeholder="activite" name="activite">
-                                                        @error('activite')
+                                                        <label for="web">site web :</label>
+                                                        <input type="url" class="form-control" id="web"
+                                                            value="{{ old('web') }}" placeholder="https://www.yourdomain.com"
+                                                            name="web">
+                                                        @error('web')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
 
@@ -267,9 +303,9 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="logo">logo :</label>
+                                                        <label for="logo">Logo :</label>
                                                         <input type="url" class="form-control" id="logo"
-                                                            aria-describedby="emailHelp" placeholder="https://www.example.com"
+                                                            value="{{ old('logo') }}" placeholder="https://www.yourdomain.com"
                                                             name="logo">
                                                         @error('logo')
                                                             <bold class="text-danger">{{ $message }}</bold>
@@ -281,34 +317,9 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="web">web :</label>
-                                                        <input type="url" class="form-control" id="web"
-                                                            aria-describedby="emailHelp" placeholder="https://www.yourdomain.com"
-                                                            name="web">
-                                                        @error('web')
-                                                            <bold class="text-danger">{{ $message }}</bold>
-                                                        @enderror
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="email">email :</label>
-                                                        <input type="email" class="form-control" id="email"
-                                                            aria-describedby="emailHelp" placeholder="email" name="email">
-                                                        @error('email')
-                                                            <bold class="text-danger">{{ $message }}</bold>
-                                                        @enderror
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="stand">stand :</label>
+                                                        <label for="stand">Stand :</label>
                                                         <input type="number" class="form-control" id="stand"
-                                                            aria-describedby="emailHelp" placeholder="stand" name="stand">
+                                                            value="{{ old('stand') }}" placeholder="stand" name="stand">
                                                         @error('stand')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
@@ -320,16 +331,15 @@
 
                                             <button type="submit" class="mt-3 btn btn-primary">Ajouter</button>
                                         </form>
-                                        <div class="alert alert-primary mt-5 mb-4" role="alert">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam voluptatem
-                                            voluptates,
-                                            reprehenderit harum, deleniti,
-                                            tenetur asperiores nesciunt facilis officia laudantium nam quaerat perferendis dolorum
-                                            ipsam
-                                            consequatur nobis explicabo quia provident.
-                                        </div>
+
+                                        <hr class="my-5">
                                         <div>
                                             <div class="wrapper_upload">
+                                                @if ($errors->has('backupAlert'))
+                                                    <div class="alert {{ $errors->first('style') }} mb-3">
+                                                        {{ $errors->first('backupAlert') }}
+                                                    </div>
+                                                @endif
                                                 <div class="container_upload">
                                                     <h1>Upload a file</h1>
                                                     <form action="{{ route('admin.backup.importEntreprises') }}" method="post"
@@ -341,26 +351,28 @@
                                                                     <i class="fas fa-file-csv"
                                                                         data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
                                                                 </div>
-                                                                <!--<input type="file" id="file-upload">-->
                                                                 <p>Drag and drop files here, or
                                                                     <a href="#" id="file-browser_upload">browse</a> your
                                                                     computer.
                                                                 </p>
                                                             </div>
                                                         </label>
-                                                        <input type="file" id="upETAB" class="d-none">
+                                                        <input type="file" name="file" id="upETAB" class="d-none">
+                                                        @error('file')
+                                                            <br>
+                                                            <span style="color: red">
+                                                                <i class="fas fa-exclamation-circle"></i>
+                                                                {{ $message }}</span>
+                                                        @enderror
                                                         <div class="button-container">
-                                                            <button type="button"
-                                                                class="w-25 btn btn-primary btn-lg btn-radius mt-4"><i
-                                                                    class="fas fa-cloud-upload-alt"></i> Emport</button>
-                                                            <a href="{{ route('admin.backup.exportEntreprises') }}"
-                                                                class="w-25 btn btn-primary btn-lg btn-radius mt-4"><i
-                                                                    class="fas fa-cloud-download-alt"></i> Export</a>
-                                                        </div>
+                                                            <button class="w-25 btn btn-primary btn-lg btn-radius mt-4">
+                                                                <i class="fas fa-cloud-upload-alt"></i> import</button>
                                                     </form>
-                                                    {{-- <a href="{{ route('admin.backup.exportEtablissements') }}">Export Etablissements</a> --}}
-
+                                                    <a href="{{ route('admin.backup.exportEntreprises') }}"
+                                                        class="w-25 btn btn-primary btn-lg btn-radius mt-4">
+                                                        <i class="fas fa-cloud-download-alt"></i> Export</a>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -369,9 +381,10 @@
                         </div>
                     </div>
                 </div>
+                </div>
             @break
 
-            {{-- part Stagiaire --}}
+            {{-- part Stagiaires --}}
             @case(5)
                 <div class="pcoded-main-container text-capitalize">
                     <div class="pcoded-wrapper">
@@ -397,6 +410,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if ($errors->has('alert'))
+                                            <div class="alert {{ $errors->first('style') }}">{{ $errors->first('alert') }}</div>
+                                        @endif
                                         <form method="POST" action="{{ route('admin.ajouter.add_S') }}">
                                             @csrf
                                             <div class="row">
@@ -404,7 +420,7 @@
                                                     <div class="form-group">
                                                         <label for="matricule">matricule :</label>
                                                         <input type="number" class="form-control" id="matricule"
-                                                            aria-describedby="emailHelp" placeholder="matricule"
+                                                            value="{{ old('matricule') }}" placeholder="matricule"
                                                             name="matricule">
                                                         @error('matricule')
                                                             <bold class="text-danger">{{ $message }}</bold>
@@ -416,7 +432,7 @@
                                                     <div class="form-group">
                                                         <label for="cin">cin :</label>
                                                         <input type="text" class="form-control" id="cin"
-                                                            aria-describedby="emailHelp" placeholder="cin" name="cin">
+                                                            value="{{ old('cin') }}" placeholder="cin" name="cin">
                                                         @error('cin')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
@@ -429,7 +445,7 @@
                                                     <div class="form-group">
                                                         <label for="nom">nom :</label>
                                                         <input type="text" class="form-control" id="nom"
-                                                            aria-describedby="emailHelp" placeholder="nom" name="nom">
+                                                            value="{{ old('nom') }}" placeholder="nom" name="nom">
                                                         @error('nom')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
@@ -440,7 +456,7 @@
                                                     <div class="form-group">
                                                         <label for="prenom">prénom :</label>
                                                         <input type="test" class="form-control" id="prenom"
-                                                            aria-describedby="emailHelp" placeholder="prenom" name="prenom">
+                                                            value="{{ old('prenom') }}" placeholder="prenom" name="prenom">
                                                         @error('prenom')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
@@ -453,7 +469,7 @@
                                                     <div class="form-group">
                                                         <label for="dateNaissance">dateNaissance :</label>
                                                         <input type="date" class="form-control" id="dateNaissance"
-                                                            aria-describedby="emailHelp" placeholder="YY-MM-DD"
+                                                            value="{{ old('dateNaissance') }}" placeholder="YY-MM-DD"
                                                             name="dateNaissance">
                                                         @error('dateNaissance')
                                                             <bold class="text-danger">{{ $message }}</bold>
@@ -465,7 +481,7 @@
                                                     <div class="form-group">
                                                         <label for="email">email :</label>
                                                         <input type="email" class="form-control" id="email"
-                                                            aria-describedby="emailHelp" placeholder="email" name="email">
+                                                            value="{{ old('email') }}" placeholder="email" name="email">
                                                         @error('email')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
@@ -479,7 +495,7 @@
                                                     <div class="form-group">
                                                         <label for="telephone">telephone :</label>
                                                         <input type="number" class="form-control" id="telephone"
-                                                            aria-describedby="emailHelp" placeholder="telephone"
+                                                            value="{{ old('telephone') }}" placeholder="telephone"
                                                             name="telephone">
                                                         @error('telephone')
                                                             <bold class="text-danger">{{ $message }}</bold>
@@ -492,7 +508,7 @@
                                                     <div class="form-group">
                                                         <label for="filiere">filiere :</label>
                                                         <input type="text" class="form-control" id="filiere"
-                                                            aria-describedby="emailHelp" placeholder="filiere" name="filiere">
+                                                            value="{{ old('filiere') }}" placeholder="filiere" name="filiere">
                                                         @error('filiere')
                                                             <bold class="text-danger">{{ $message }}</bold>
                                                         @enderror
@@ -504,11 +520,9 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="stg">Sexe</label>
-                                                        <select class="form-control mt-2" id="stg"
-                                                            aria-label="Default select example" name="sexe">
-                                                            <option selected>Sexe</option>
-                                                            <option value="F">femme</option>
-                                                            <option value="H">homme</option>
+                                                        <select class="form-select mt-2" id="stg" name="sexe">
+                                                            <option selected value="F">Femme</option>
+                                                            <option value="H">Homme</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -519,7 +533,7 @@
                                                         </label>
 
                                                         <input class="form-control" list="GFGOptions" id="GFGDataList"
-                                                            placeholder="Select option">
+                                                            placeholder="Etablissement">
                                                         <datalist id="GFGOptions">
                                                             @foreach ($etabs as $etab)
                                                                 <option value="{{ $etab->nom }}">
@@ -535,16 +549,15 @@
                                             {{-- <input type="number" class="d-none" value="1" name="role"> --}}
                                             <button type="submit" class="btn btn-primary mt-2">Ajouter</button>
                                         </form>
-                                        <div class="alert alert-primary mt-5 mb-4" role="alert">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam voluptatem
-                                            voluptates,
-                                            reprehenderit harum, deleniti,
-                                            tenetur asperiores nesciunt facilis officia laudantium nam quaerat perferendis dolorum
-                                            ipsam
-                                            consequatur nobis explicabo quia provident.
-                                        </div>
+
+                                        <hr class="my-5">
                                         <div>
                                             <div class="wrapper_upload">
+                                                @if ($errors->has('backupAlert'))
+                                                    <div class="alert {{ $errors->first('style') }} mb-3">
+                                                        {{ $errors->first('backupAlert') }}
+                                                    </div>
+                                                @endif
                                                 <div class="container_upload">
                                                     <h1>Upload a file</h1>
                                                     <form action="{{ route('admin.backup.importStagiaires') }}" method="post"
@@ -556,25 +569,27 @@
                                                                     <i class="fas fa-file-csv"
                                                                         data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
                                                                 </div>
-                                                                <!--<input type="file" id="file-upload">-->
                                                                 <p>Drag and drop files here, or
-                                                                    <a href="#" id="file-browser_upload">browse</a> your
+                                                                    <a href="#" id="file-browser_upload">browse</a>
+                                                                    your
                                                                     computer.
                                                                 </p>
                                                             </div>
                                                         </label>
-                                                        <input type="file" id="upETAB" class="d-none">
+                                                        <input type="file" name="file" id="upETAB" class="d-none">
+                                                        @error('file')
+                                                            <br>
+                                                            <span style="color: red">
+                                                                <i class="fas fa-exclamation-circle"></i>
+                                                                {{ $message }}</span>
+                                                        @enderror
                                                         <div class="button-container">
-                                                            <button type="button"
-                                                                class="w-25 btn btn-primary btn-lg btn-radius mt-4"><i
-                                                                    class="fas fa-cloud-upload-alt"></i> Emport</button>
-                                                            <a href="{{ route('admin.backup.exportStagiaires') }}"
-                                                                class="w-25 btn btn-primary btn-lg btn-radius mt-4"><i
-                                                                    class="fas fa-cloud-download-alt"></i> Export</a>
-                                                        </div>
+                                                            <button class="w-25 btn btn-primary btn-lg btn-radius mt-4">
+                                                                <i class="fas fa-cloud-upload-alt"></i> import</button>
                                                     </form>
-                                                    {{-- <a href="{{ route('admin.backup.exportEtablissements') }}">Export Etablissements</a> --}}
-
+                                                    <a href="{{ route('admin.backup.exportStagiaires') }}"
+                                                        class="w-25 btn btn-primary btn-lg btn-radius mt-4">
+                                                        <i class="fas fa-cloud-download-alt"></i> Export</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -586,7 +601,7 @@
                 </div>
             @break
 
-            {{-- part etablissement --}}
+            {{-- part Etablissements --}}
             @case(6)
                 <div class="pcoded-main-container">
                     <div class="pcoded-wrapper">
@@ -613,30 +628,33 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <form method="POST" action="{{ route('admin.ajouter.add_Etab') }}">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label for="nom">nom Etablissement</label>
-                                                <input type="text" class="form-control" id="nom"
-                                                    aria-describedby="emailHelp" placeholder="Enter Etablissement Name"
-                                                    name="nom">
-                                                @error('nom')
-                                                    <bold class="text-danger">{{ $message }}</bold>
-                                                @enderror
+                                        @if ($errors->has('alert'))
+                                            <div class="alert {{ $errors->first('style') }}">{{ $errors->first('alert') }}</div>
+                                        @endif
+                                        <div class="row">
+                                            <div class="offset col-3"></div>
+                                            <form class="col-6" method="POST" action="{{ route('admin.ajouter.add_Etab') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="nom">Etablissement</label>
+                                                    <input type="text" class="form-control" id="nom"
+                                                        placeholder="Nom abregee" name="nom">
+                                                    @error('nom')
+                                                        <bold class="text-danger">{{ $message }}</bold>
+                                                    @enderror
 
-                                            </div>
-                                            <button type="submit" class="btn btn-primary mt-2">Ajouter</button>
-                                        </form>
-                                        <div class="alert alert-primary mt-5 mb-4" role="alert">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam voluptatem
-                                            voluptates,
-                                            reprehenderit harum, deleniti,
-                                            tenetur asperiores nesciunt facilis officia laudantium nam quaerat perferendis dolorum
-                                            ipsam
-                                            consequatur nobis explicabo quia provident.
+                                                </div>
+                                                <button type="submit" class="btn btn-primary mt-2">Ajouter</button>
+                                            </form>
                                         </div>
+                                        <hr class="my-5">
                                         <div>
                                             <div class="wrapper_upload">
+                                                @if ($errors->has('backupAlert'))
+                                                    <div class="alert {{ $errors->first('style') }} mb-3">
+                                                        {{ $errors->first('backupAlert') }}
+                                                    </div>
+                                                @endif
                                                 <div class="container_upload">
                                                     <h1>Upload a file</h1>
                                                     <form action="{{ route('admin.backup.importEtablissements') }}"
@@ -648,28 +666,33 @@
                                                                     <i class="fas fa-file-csv"
                                                                         data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
                                                                 </div>
-                                                                <!--<input type="file" id="file-upload">-->
                                                                 <p>Drag and drop files here, or
-                                                                    <a href="#" id="file-browser_upload">browse</a> your
+                                                                    <a href="#" id="file-browser_upload">browse</a>
+                                                                    your
                                                                     computer.
                                                                 </p>
                                                             </div>
                                                         </label>
-                                                        <input type="file" id="upETAB" class="d-none">
+                                                        <input type="file" name="file" accept=".csv" id="upETAB"
+                                                            class="d-none">
+                                                        @error('file')
+                                                            <br>
+                                                            <span style="color: red">
+                                                                <i class="fas fa-exclamation-circle"></i>
+                                                                {{ $message }}</span>
+                                                        @enderror
                                                         <div class="button-container">
-                                                            <button type="button"
-                                                                class="w-25 btn btn-primary btn-lg btn-radius mt-4"><i
-                                                                    class="fas fa-cloud-upload-alt"></i> Emport</button>
-                                                            <a href="{{ route('admin.backup.exportEtablissements') }}"
-                                                                class="w-25 btn btn-primary btn-lg btn-radius mt-4"><i
-                                                                    class="fas fa-cloud-download-alt"></i> Export</a>
-                                                        </div>
+                                                            <button class="w-25 btn btn-primary btn-lg btn-radius mt-4">
+                                                                <i class="fas fa-cloud-upload-alt"></i> import</button>
                                                     </form>
-                                                    {{-- <a href="{{ route('admin.backup.exportEtablissements') }}">Export Etablissements</a> --}}
-
+                                                    <a href="{{ route('admin.backup.exportEtablissements') }}"
+                                                        class="w-25 btn btn-primary btn-lg btn-radius mt-4">
+                                                        <i class="fas fa-cloud-download-alt"></i> Export</a>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>

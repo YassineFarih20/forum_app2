@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'adminLogin' => \App\Http\Middleware\ValidateAdminLogin::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'validateCv' => \App\Http\Middleware\ValidateCvMiddleware::class,
+        'validateImport' => \App\Http\Middleware\ValidateImportFile::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

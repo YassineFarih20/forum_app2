@@ -2,25 +2,18 @@
     <div class="card table-card">
         <div class="card-header">
 
-            <div class="row">
-                <div class="col-md-10">
-                    <h3>{{ isset($title) ? $title : 'List stagiaires' }}</h3>
-                </div>
+            <div class="d-flex justify-content-between">
+
+                <h3>{{ isset($title) ? $title : 'List stagiaires' }}</h3>
                 @isset($temp)
                     @if ($temp)
-                        <div class="col-md-2">
-                            <a href="{{ route('admin.backup.exportStgParticipants') }}" class=" btn btn-primary">
-                                <i class="feather icon-download"></i>
-                                Export</a>
-
-                        </div>
+                        <a href="{{ route('admin.backup.exportStgParticipants') }}" class=" btn btn-primary">
+                            <i class="feather icon-download"></i>
+                            Export</a>
                     @else
-                        <div class="col-md-2">
-                            <a href="{{ route('admin.backup.exportStgNonConfirme') }}" class=" btn btn-primary">
-                                <i class="feather icon-download"></i>
-                                Export</a>
-
-                        </div>
+                        <a href="{{ route('admin.backup.exportStgNonConfirme') }}" class=" btn btn-primary">
+                            <i class="feather icon-download"></i>
+                            Export</a>
                     @endif
                 @endisset
             </div>

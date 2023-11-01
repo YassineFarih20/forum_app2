@@ -6692,31 +6692,35 @@ body.layout-1 .pcoded-navbar.active-dark .sidemenu li.active:after {
 /**  =====================
       Form Componant css start
 ==========================  **/
-.custom-select,
+.form-select {
+    appearance: auto;
+}
+
+.form-select,
 .form-control {
-    background: #eff3f6;
+    background: white;
     padding: 10px 20px;
     font-size: 14px;
     height: auto;
 }
 
-.custom-select:focus,
+.form-select:focus,
 .form-control:focus {
-    background: #eff3f6;
+    background: white;
 }
 
-.custom-select::-moz-placeholder,
+.form-select::-moz-placeholder,
 .form-control::-moz-placeholder {
     color: #aaaeb3;
     opacity: 1;
 }
 
-.custom-select:-ms-input-placeholder,
+.form-select:-ms-input-placeholder,
 .form-control:-ms-input-placeholder {
     color: #aaaeb3;
 }
 
-.custom-select::-webkit-input-placeholder,
+.form-select::-webkit-input-placeholder,
 .form-control::-webkit-input-placeholder {
     color: #aaaeb3;
 }
@@ -6726,7 +6730,8 @@ body.layout-1 .pcoded-navbar.active-dark .sidemenu li.active:after {
     background: #eff3f6;
 }
 
-.input-group .form-control {
+.input-group .form-control,
+.form-select {
     padding: 8px 20px;
 }
 
@@ -6759,13 +6764,14 @@ body.layout-1 .pcoded-navbar.active-dark .sidemenu li.active:after {
     height: 2.65rem;
 }
 
-.custom-select {
-    height: calc(2.25rem + 9px);
-}
+// .form-select {
+//     height: calc(2.25rem + 9px);
+// }
 
 /* input group End */
 /**====== Form Componant css end ======**/
-select.form-control:not([size]):not([multiple]) {
+select.form-control:not([size]):not([multiple]),
+select.form-select:not([size]):not([multiple]) {
     height: calc(2.55rem + 2px);
 }
 
@@ -6774,7 +6780,9 @@ select.form-control:not([size]):not([multiple]) {
 .input-group-lg>.input-group-prepend>select.btn:not([size]):not([multiple]),
 .input-group-lg>.input-group-prepend>select.input-group-text:not([size]):not([multiple]),
 .input-group-lg>select.form-control:not([size]):not([multiple]),
-select.form-control-lg:not([size]):not([multiple]) {
+.input-group-lg>select.form-select:not([size]):not([multiple]),
+select.form-control-lg:not([size]):not([multiple]),
+select.form-select-lg:not([size]):not([multiple]) {
     height: calc(3.375rem + 2px);
 }
 
@@ -7490,9 +7498,9 @@ table.dataTable tbody>tr>.selected th.select-checkbox:after {
     line-height: 2;
 }
 
-.aut-bg-img .custom-select,
+.aut-bg-img .form-select,
 .aut-bg-img .form-control,
-.aut-bg-img-side .custom-select,
+.aut-bg-img-side .form-select,
 .aut-bg-img-side .form-control {
     background: transparent;
 }

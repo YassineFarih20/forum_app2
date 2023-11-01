@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\QueryException;
+
 
 class AdminController extends Controller
 {
@@ -145,35 +147,48 @@ class AdminController extends Controller
         $admin->login = strip_tags($request->input('name'));
         $admin->password = Hash::make(strip_tags($request->input('password')));
         $admin->role = 1;
-        $admin->save();
+        try {
+            $admin->save();
+        } catch (QueryException $e) {
+            // MySQL error code for duplicate entry violation
+            if ($e->errorInfo[1] == 1062) return redirect()->back()->withInput()->withErrors(['alert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return redirect()->back()->withInput()->withErrors(['alert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
+        }
 
-        return redirect()->back();
+        return redirect()->back()->withErrors(['alert' => "Etablissement inserted successfully", 'style' => 'alert-success']);
     }
 
     public function add_e(Request $request)
     {
 
         $request->validate([
-            'nom' => 'required|string|max:50',
+            'raisonabregee' => 'required|string|max:20',
+            'raisonsociale' => 'required|string|max:40',
             'representant' => 'required|string|max:50',
-            'activite' => 'required|string|max:255',
             'logo' => 'required|url',
             'web' => 'required|url',
-            'email' => 'required|email|max:255',
-            // 'password' => 'required|min:6|max:15',
-            'stand' => 'required|integer|max:10',
+            'email' => 'required|email|max:150',
+            'stand' => 'required|integer',
         ]);
-        $entreprises = new Entreprise();
-        $entreprises->nom = strip_tags($request->input('nom'));
-        $entreprises->representant = strip_tags($request->input('representant'));
-        $entreprises->activite = strip_tags($request->input('activite'));
-        $entreprises->logo = strip_tags($request->input('logo'));
-        $entreprises->web = strip_tags($request->input('web'));
-        $entreprises->email = strip_tags($request->input('email'));
-        $entreprises->stand = strip_tags($request->input('stand'));
-        $entreprises->save();
 
-        return redirect()->back();
+        $entreprise = new Entreprise();
+        $entreprise->raisonabregee = strip_tags($request->input('raisonabregee'));
+        $entreprise->raisonsociale = strip_tags($request->input('raisonsociale'));
+        $entreprise->representant = strip_tags($request->input('representant'));
+        $entreprise->logo = strip_tags($request->input('logo'));
+        $entreprise->web = strip_tags($request->input('web'));
+        $entreprise->email = strip_tags($request->input('email'));
+        $entreprise->stand = strip_tags($request->input('stand'));
+
+        try {
+            $entreprise->save();
+        } catch (QueryException $e) {
+            // MySQL error code for duplicate entry violation
+            if ($e->errorInfo[1] == 1062) return redirect()->back()->withInput()->withErrors(['alert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return redirect()->back()->withInput()->withErrors(['alert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
+        }
+
+        return redirect()->back()->withErrors(['alert' => "Entreprise inserted successfully", 'style' => 'alert-success']);
     }
 
     public function add_s(Request $request)
@@ -190,43 +205,48 @@ class AdminController extends Controller
             'filiere' => 'required|string|max:255',
             'sexe' => 'required|in:F,H',
         ]);
-        if (isset($request)) {
 
-            $stg = new Stagiaire();
-            $stg->matricule = strip_tags($request->matricule);
-            $stg->cin = strip_tags($request->cin);
-            $stg->nom = strip_tags($request->nom);
-            $stg->prenom = strip_tags($request->prenom);
-            $stg->dateNaissance = strip_tags($request->dateNaissance);
-            $stg->email = strip_tags($request->email);
-            $stg->telephone = strip_tags($request->telephone);
-            $stg->filiere = strip_tags($request->filiere);
-            $stg->sexe = strip_tags($request->sexe);
-            $stg->etablissement_id = 1;
+        $stg = new Stagiaire();
+        $stg->matricule = strip_tags($request->matricule);
+        $stg->cin = strip_tags($request->cin);
+        $stg->nom = strip_tags($request->nom);
+        $stg->prenom = strip_tags($request->prenom);
+        $stg->dateNaissance = strip_tags($request->dateNaissance);
+        $stg->email = strip_tags($request->email);
+        $stg->telephone = strip_tags($request->telephone);
+        $stg->filiere = strip_tags($request->filiere);
+        $stg->sexe = strip_tags($request->sexe);
+        $stg->etablissement_id = 1;
+
+        try {
             $stg->save();
-
-            return redirect()->back();
+        } catch (QueryException $e) {
+            // MySQL error code for duplicate entry violation
+            if ($e->errorInfo[1] == 1062) return redirect()->back()->withInput()->withErrors(['alert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return redirect()->back()->withInput()->withErrors(['alert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
         }
 
-        return view('/');
+        return redirect()->back()->withErrors(['alert' => "Stagiaire inserted successfully", 'style' => 'alert-success']);
     }
 
     public function add_etab(Request $request)
     {
-
         $request->validate([
             'nom' => 'required|string|max:255',
         ]);
-        if (isset($request)) {
 
-            $stg = new Etablissement();
-            $stg->nom = strip_tags($request->nom);
-            $stg->save();
+        $etablissement = new Etablissement();
+        $etablissement->nom = strip_tags($request->nom);
 
-            return redirect()->back();
+        try {
+            $etablissement->save();
+        } catch (QueryException $e) {
+            // MySQL error code for duplicate entry violation
+            if ($e->errorInfo[1] == 1062) return redirect()->back()->withInput()->withErrors(['alert' => $e->errorInfo[2], 'style' => 'alert-danger']);
+            return redirect()->back()->withInput()->withErrors(['alert' => 'Database error: ' . $e->getMessage(), 'style' => 'alert-danger']);
         }
 
-        return view('/');
+        return redirect()->back()->withErrors(['alert' => "Etablissement inserted successfully", 'style' => 'alert-success']);
     }
 
     public function ajouterEtab()

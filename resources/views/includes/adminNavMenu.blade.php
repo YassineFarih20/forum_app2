@@ -37,9 +37,9 @@
                         <li class=""><a href="{{ route('admin.ajouter.ajouter_E') }}" class="">Ajouter
                                 Entreprise</a></li>
                         <li class=""><a href="{{ route('admin.ajouter.ajouter_S') }}" class="">Ajouter
-                                Stagiaires</a></li>
+                                Stagiaire</a></li>
                         <li class=""><a href="{{ route('admin.ajouter.ajouter_etab') }}" class="">Ajouter
-                                etablissements;</a></li>
+                                Etablissement</a></li>
 
                     </ul>
                 </li>

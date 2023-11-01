@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stagiaire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class StagiaireController extends Controller
@@ -14,7 +15,7 @@ class StagiaireController extends Controller
 
         // dd(Session::get('authEntreprise'));
 
-        // session('authEntreprise') ? $this->middleware("auth:entreprise") : $this->middleware("auth");
+        session('authEntreprise') ? $this->middleware("auth:entreprise") : $this->middleware("auth");
     }
     public function index()
     {

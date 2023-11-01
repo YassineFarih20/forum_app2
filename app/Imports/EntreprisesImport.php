@@ -4,7 +4,6 @@ namespace App\Imports;
 
 use App\Models\Entreprise;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Support\Facades\Hash;
 
 class EntreprisesImport implements ToModel
 {

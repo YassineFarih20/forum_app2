@@ -2,14 +2,12 @@
     <div class="card table-card">
         <div class="card-header">
 
-            <div class="row">
-                <div class="col-md-10">
-                    <h3>Participation par EFP</h3>
-                </div>
-                <div class="col-md-2">
-                    <a href="{{ route('admin.backup.exportEFP') }}" class="btn btn-primary">
-                        <i class="feather icon-download"></i>Export</a>
-                </div>
+            <div class=" d-flex justify-content-between">
+                <h3>Participation par EFP</h3>
+                {{-- </div>
+                <div class="col-md-2"> --}}
+                <a href="{{ route('admin.backup.exportEFP') }}" class="btn btn-primary">
+                    <i class="feather icon-download"></i>Export</a>
             </div>
 
         </div>
