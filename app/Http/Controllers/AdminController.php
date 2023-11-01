@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -55,26 +54,6 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
-
-    public function downloadCv(Request $request)
-    {
-        $filePath = $request->input("fileName");
-        return Storage::disk('resumes')->exists($filePath) ? Storage::disk("resumes")->download($filePath) : redirect()->back()->with('error', 'CV file not found.');
-    }
-
-    // public function viewCv(Request $request)
-    // {
-    //     $fileName = $request->input("fileName");
-    //     if (Storage::disk('local')->exists($fileName)) {
-    //         $file = storage_path("app/" . $fileName);
-    //         $headers = [
-    //             'Content-Type' => 'application/pdf',
-    //             'Content-Disposition' => 'inline; filename="' . $fileName . '"',
-    //         ];
-    //         return response()->file($file, $headers);
-    //     } else
-    //         return redirect()->back()->with('error', 'CV file not found.');
-    // }
 
     public function deleteStudent($id)
     {

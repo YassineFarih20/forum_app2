@@ -18,7 +18,7 @@ class Entreprise extends Model implements Authenticatable
         parent::boot();
 
         static::creating(function ($model) {
-            $model->password = Hash::make($model->raisonabregee . "123@");
+            $model->password = Hash::make(strtoupper(str_replace(" ", "", $model->representant)) . "123@");
         });
     }
 
@@ -30,9 +30,11 @@ class Entreprise extends Model implements Authenticatable
     ];
 
     protected $fillable = [
-        'nom',
         'representant',
+        'raisonabregee',
+        'raisonsociale',
+        'logo',
+        'web',
         'email',
-        'status'
     ];
 }

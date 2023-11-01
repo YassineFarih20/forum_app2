@@ -13,22 +13,7 @@ class Stagiaire extends Model implements Authenticatable
 {
     use \Illuminate\Auth\Authenticatable;
     use HasFactory;
-    public function getCV()
-    {
-        if ($this->cv) {
-            $pdf = Storage::disk('resumes')->get($this->cv);
-            return response($pdf, 200, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . $this->cv . '"',
-            ]);
-            // $headers = [
-            //     'Content-Type' => 'application/pdf',
-            //     'Content-Disposition' => 'inline; filename="' . $fileName . '"',
-            // ];
-            // return response()->file($file, $headers);
-        }
-        return redirect()->back()->with(["error" => "Pas de CV trouvé."]);
-    }
+
     public function etablissement()
     {
         return $this->belongsTo(Etablissement::class, 'etablissement_id');

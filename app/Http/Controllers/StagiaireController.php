@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stagiaire;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class StagiaireController extends Controller
 {
@@ -83,5 +82,18 @@ class StagiaireController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'Stagiaire non trouvé.'], 404);
         }
+    }
+
+    public function viewCV(Request $request)
+    {
+        $fileName = $request->cv;
+        if ($fileName) {
+            $pdf = Storage::disk('resumes')->get($fileName);
+            return response($pdf, 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $fileName . '"',
+            ]);
+        }
+        return redirect()->back()->with(["error" => "Pas de CV trouvé."]);
     }
 }

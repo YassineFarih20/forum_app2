@@ -27,19 +27,18 @@
 
     <div class="container-fluid bg-primary mb-2 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
         <div class="container">
-            <form method="post" action="/getstagiairebycindatenaissanceinscription">
+            <form method="post" action="{{ route('getStagiaire') }}">
                 @csrf
-
                 <div class="row g-2">
                     <div class="col-md-10">
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control border-0" name="cin" placeholder="CIN ?"
+                                <input type="text" class="form-control border-0" name="cin" placeholder="CIN"
                                     value="{{ isset($stagiaire) ? $stagiaire->cin : '' }}" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control border-0" name="datenaissance"
-                                    placeholder="Date naissance ?"
+                                <input type="date" class="form-control border-0" name="datenaissance"
+                                    placeholder="Date naissance"
                                     value="{{ isset($stagiaire) ? $stagiaire->dateNaissance : '' }}" />
                             </div>
                         </div>

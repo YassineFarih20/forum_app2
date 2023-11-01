@@ -10,115 +10,69 @@ use Illuminate\Support\Facades\Storage;
 class inscriptionController extends Controller
 {
 
-    public function getstagiairebycindatenaissance(Request $request)
+    function __construct()
     {
-
-        // $stagiaire = Stagiaire::join('etablissements', 'etablissements.id', '=', 'stagiaires.etablissement_id')
-        //     ->select('stagiaires.*', 'etablissements.nom as efp')
-        //     ->where('cin', $request->get('cin'))
-        //     ->where('dateNaissance', $request->get('datenaissance'))->first();
-
-
-        // $stagiaire ? Session::put('currentStagiaire', $stagiaire) : Session::forget('currentStagiaire');
-        $this->stagiaireSession($request);
-        // $this->entretienSession();
-        // return view('inscription', compact('stagiaire'));
-        return view('inscription');
+        $this->middleware("validateCv")->only("enregistrerInscription");
     }
 
-    public function entretienSession()
+    public function getStagiaire(Request $request)
     {
-        $stagiaire = Session::get('currentStagiaire');
+        $request->validate([
+            'cin' => 'required',
+            'datenaissance' => 'required',
+        ]);
+        $this->setSession($request->cin, $request->datenaissance);
+        return redirect()->back();
+    }
+
+    public function setSession($cin, $dateNaissance)
+    {
+        $stagiaire = Stagiaire::join('etablissements', 'etablissements.id', '=', 'stagiaires.etablissement_id')
+            ->select('stagiaires.*', 'etablissements.nom as efp')
+            ->where('cin', $cin)
+            ->where('dateNaissance', $dateNaissance)->first();
+
         $entretien = Stagiaire::join('entretiens as e', 'stagiaires.id', '=', 'e.stagiaire_id')
             ->select('e.entreprise_id')
             ->where('stagiaires.id', $stagiaire->id)
             ->get();
-        $stagiaire ? Session::put('currentEntretien', $entretien) : Session::forget('currentEntretien');
-    }
-    public function stagiaireSession($request)
-    {
-        $stagiaire = Stagiaire::join('etablissements', 'etablissements.id', '=', 'stagiaires.etablissement_id')
-            ->select('stagiaires.*', 'etablissements.nom as efp')
-            ->where('cin', $request->get('cin'))
-            ->where('dateNaissance', $request->get('datenaissance'))->first();
-
 
         $stagiaire ? Session::put('currentStagiaire', $stagiaire) : Session::forget('currentStagiaire');
-        if ($stagiaire) $this->entretienSession();
-        else
-            redirect()->back();
+        $stagiaire ? Session::put('currentEntretien', $entretien) : Session::forget('currentEntretien');
     }
+
     public function enregistrerInscription(Request $request)
     {
-        $request->validate([
-            'cin' => 'required',
-            'nom' => 'required',
-            'prenom' => 'required',
-            'datenaissance' => 'required',
-            'email' => 'required'
-        ]);
-        $stagiaire = Stagiaire::where('cin', $request->get('cin'))->first();
-        // $stagiaire->email = $request->get('email');
+        $stagiaire = Session::get('currentStagiaire');
         $stagiaire->status = 1;
-
-        // if (isset($stagiaire))
-        //     Session::put('currentStagiaire', $stagiaire);
-
 
         if ($request->hasFile('cv')) {
             $file = $request->file('cv');
-
-            if ($stagiaire->cv) {
-                Storage::delete($stagiaire->cv);
-            }
-
-            $path = $file->store('resumes', 'local');
+            if ($stagiaire->cv) $path = Storage::disk('resumes')->delete($stagiaire->cv);
+            $path = Storage::disk('resumes')->putFileAs('/', $file, $stagiaire->cin . str()->uuid() . '.' . $file->extension());
             $stagiaire->cv = $path;
             $stagiaire->save();
-            $this->stagiaireSession($request);
+            // refreshing session
+            $this->setSession($stagiaire->cin, $stagiaire->datenaissance);
 
-
-            // return redirect()->route('invitation');
             return redirect(route('inscription'))->with('success', 'Inscription enregistrée!');
         } else return redirect(route('inscription'))->with('success', 'CV est obligatoire pour s\'inscrire!');
     }
+
     public function annulerInscription(string $cin)
     {
-
-        $stagiaire = Stagiaire::where('cin', $cin)->first();
+        $stagiaire = Session::get('currentStagiaire');
         $stagiaire->status = 0;
-        if ($stagiaire->cv) {
-            Storage::delete($stagiaire->cv);
-        }
 
-        $stagiaire->cv = '';
+        if ($stagiaire->cv) Storage::disk('resumes')->delete($stagiaire->cv);
 
-        if (isset($stagiaire)) Session::put('currentStagiaire', $stagiaire);
-
+        $stagiaire->cv = null;
         $stagiaire->save();
-        return redirect(route('inscription'))->with('success', 'Inscription enregistr&eacute;e!');
-    }
 
-    public function cvUpload(Request $request)
-    {
-        $stagiaire = $request->session()->get('currentStagiaire');
+        // refreshing session
+        $this->setSession($stagiaire->cin, $stagiaire->datenaissance);
 
-        if ($stagiaire) {
-            if ($request->hasFile('cv')) {
-                $file = $request->file('cv');
 
-                if ($stagiaire->cv) {
-                    Storage::delete($stagiaire->cv);
-                }
-
-                $path = $file->store('resumes', 'local');
-                $stagiaire->cv = $path;
-                $stagiaire->save();
-
-                return redirect()->route('invitation');
-            }
-        }
-
-        return redirect()->back()->withErrors(['error' => 'Erreur : Veuillez réessayer plus tard.']);
+        return redirect(route('inscription'))->with('success', 'Inscription annulé!');
     }
 }

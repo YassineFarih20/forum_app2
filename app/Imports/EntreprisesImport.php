@@ -19,13 +19,11 @@ class EntreprisesImport implements ToModel
         $ent = new Entreprise();
         $ent->email = $row[0];
         $ent->web = $row[1];
-        $ent->nom = $row[2];
         $ent->raisonsociale = $row[2];
         $ent->raisonabregee = $row[3];
-        $ent->activite = $row[4];
-        $ent->representant = $row[5];
-        $ent->logo = $row[6];
-        $ent->stand = $row[7];
+        $ent->representant = $row[4];
+        $ent->logo = $row[5];
+        $ent->stand = $row[6];
         return $ent;
     }
 }

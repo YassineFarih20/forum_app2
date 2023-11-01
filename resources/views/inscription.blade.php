@@ -26,9 +26,8 @@
 
     <div class="container-fluid bg-primary mb-2 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
         <div class="container">
-            <form method="post" action="/getstagiairebycindatenaissanceinscription">
+            <form method="post" action="{{ route('getStagiaire') }}">
                 @csrf
-
                 <div class="row g-2">
                     <div class="col-md-10">
                         <div class="row g-2">
@@ -60,7 +59,7 @@
             <h4 class="text-center my-5 wow fadeInUp" data-wow-delay="0.1s">Informations personnelles</h4>
             <div class="row mt-1 g-4">
                 <div class="wow fadeInUp" data-wow-delay="0.5s">
-                    <form action="/enregistrerinscription" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('enregistrerInscription') }}" method="post" enctype="multipart/form-data">
                         @method('PATCH')
                         @csrf
                         <div class="row g-3">

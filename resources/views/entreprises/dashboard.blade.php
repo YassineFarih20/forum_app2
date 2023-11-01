@@ -52,10 +52,9 @@
                                     <td> {{ $application->stagiaire->dateNaissance }} </td>
                                     <td> {{ $application->stagiaire->etablissement->nom }}</td>
                                     <td>
-                                        <form action="{{ route('showCVs') }}" method="post">
+                                        <form action="{{ route('viewCV') }}" method="post">
                                             @csrf
-                                            <input type="hidden" name="fileName"
-                                                value="{{ $application->stagiaire->cv }}">
+                                            <input type="hidden" name="cv" value="{{ $application->stagiaire->cv }}">
                                             <button class="view-cv btn btn-info"><i class="fas fa-eye"></i> View CV</button>
 
                                         </form>
