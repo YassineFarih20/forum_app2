@@ -357,7 +357,7 @@
                                                                 </p>
                                                             </div>
                                                         </label>
-                                                        <input type="file" name="file" id="upETAB" class="d-none">
+                                                        <input type="file" name="file" accept=".csv" id="upETAB" class="d-none">
                                                         @error('file')
                                                             <br>
                                                             <span style="color: red">
@@ -576,7 +576,7 @@
                                                                 </p>
                                                             </div>
                                                         </label>
-                                                        <input type="file" name="file" id="upETAB" class="d-none">
+                                                        <input type="file" name="file" accept=".csv" id="upETAB" class="d-none">
                                                         @error('file')
                                                             <br>
                                                             <span style="color: red">

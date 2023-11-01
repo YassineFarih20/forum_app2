@@ -71,7 +71,6 @@ Route::post('/login', [EntrepriseController::class, 'login'])->name('login.actio
 Route::post('/logout', [EntrepriseController::class, 'logout'])->name('logout.action');
 Route::get('/entreprise/dashboard', [EntrepriseController::class, 'dashboard'])->name('entreprise.dashboard');
 Route::get('/entreprise/logout', [EntrepriseController::class, 'logout'])->name('entreprise.logout');
-// Route::post('/showcv', [EntrepriseController::class, 'showCv'])->name('showCVs');
 
 
 
