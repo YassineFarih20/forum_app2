@@ -31,22 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
-// window.onload = (function () {
-//     document.getElementById("downloadBtn").addEventListener("click", () => {
-//         const invoice = this.document.getElementById("elementToPrint");
-//         console.log(invoice);
-//         console.log(window);
-//         var opt = {
-//             margin: 1,
-//             filename: "myfile.pdf",
-//             image: { type: "jpeg", quality: 0.98 },
-//             html2canvas: { scale: 1 },
-//             jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-//         };
-//         html2pdf().from(invoice).set(opt).save();
-//     });
-// })(
-//
 (function ($) {
     "use strict";
 
@@ -121,3 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     });
 })(jQuery);
+
+$("input[name='cin']").on({
+    input: function (e) {
+        e.target.value = e.target.value.toUpperCase();
+    },
+});

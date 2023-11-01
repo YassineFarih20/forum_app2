@@ -6,7 +6,6 @@ use App\Http\Controllers\inscriptionController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\StagiaireController;
 use App\Http\Controllers\ApplicationController;
@@ -22,7 +21,7 @@ Route::get('/contact', fn () => view('contact'))->name('contact');
 Auth::routes();
 
 
-Route::match(['get', 'post'], '/getStagiaire', [inscriptionController::class, 'getStagiaire'])->name('getStagiaire');
+Route::post('/getStagiaire', [inscriptionController::class, 'getStagiaire'])->name('getStagiaire');
 Route::patch('/enregistrerinscription', [inscriptionController::class, 'enregistrerInscription'])->name('enregistrerInscription');
 // Route::get('/annulerinscription/{cin}', [App\Http\Controllers\inscriptionController::class, 'annulerInscription'])->name('annulerinscription');
 
