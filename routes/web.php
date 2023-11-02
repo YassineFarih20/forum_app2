@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\StagiaireController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\RemarqueController;
 
 Route::get('/', fn () => view('index'))->name('acceuil');
 Route::get('/about', fn () => view('about'))->name('about');
@@ -76,6 +77,11 @@ Route::get('/entreprise/logout', [EntrepriseController::class, 'logout'])->name(
 
 
 Route::post('/presence/{cin}', [StagiaireController::class, 'marquerPresent'])->name('marquerPresent');
+Route::post('/Entretien/{cin}', [StagiaireController::class, 'passerEntretien'])->name('passerEntretien');
+Route::get('/remarques/create/{cin}', [RemarqueController::class, 'afficherFormulaireRemarque'])->name('remarques.create');
+Route::post('/remarques/enregistrer', [RemarqueController::class, 'enregistrerRemarque'])->name('remarques.enregistrer');
+
+
 Route::post('/viewCv', [StagiaireController::class, 'viewCv'])->name('viewCV');
 // Route::post('/cv/download', [AdminController::class, 'downloadCv'])->name('downloadCV');
 

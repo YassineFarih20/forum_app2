@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stagiaire;
 use Illuminate\Http\Request;
+use App\Models\Entretien;
 use Illuminate\Support\Facades\Storage;
 
 class StagiaireController extends Controller
@@ -96,6 +97,18 @@ class StagiaireController extends Controller
             return response()->json(['error' => 'Stagiaire non trouvé.'], 404);
         }
     }
+    public function passerEntretien($cin)
+    {
+        try {
+            $stg = Stagiaire::where('cin', $cin)->firstOrFail();
+            $stg->entretiens()->update(['status' => 2]);
+            return redirect()->route('remarques.create', ['cin' => $stg->cin]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Stagiaire non trouvé.'], 404);
+        }
+    }
+    
+    
 
     public function viewCV(Request $request)
     {

@@ -18,6 +18,11 @@ class Stagiaire extends Model implements Authenticatable
     {
         return $this->belongsTo(Etablissement::class, 'etablissement_id');
     }
+    public function entretiens()
+{
+    return $this->hasMany(Entretien::class, 'stagiaire_id');
+}
+
 
     // public function viewCv(Request $request)
     // {

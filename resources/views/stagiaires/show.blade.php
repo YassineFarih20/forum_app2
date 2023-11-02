@@ -96,7 +96,7 @@
                         <div class="p-3 d-flex gap-2">
                             @auth('entreprise')
                                 @if ($stagiaire->status > 1)
-                                    <form action="{{ route('marquerPresent', ['cin' => $stagiaire->cin]) }}" method="POST">
+                                    <form action="{{ route('passerEntretien', ['cin' => $stagiaire->cin]) }}" method="POST">
                                         @csrf
                                         <button class="btn btn-success">Passer un entretien</button>
                                     </form>
@@ -115,7 +115,6 @@
                                 @endif
                             @endauth
                         </div>
-
                     </div>
                 </div>
             </div>
