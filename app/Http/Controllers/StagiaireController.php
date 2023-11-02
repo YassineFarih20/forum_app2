@@ -4,23 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\Stagiaire;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class StagiaireController extends Controller
 {
     public function __construct()
     {
-        // dd(auth('entreprise')->user());
-
-        // dd(Session::get('authEntreprise'));
-
-        session('authEntreprise') ? $this->middleware("auth:entreprise") : $this->middleware("auth");
+        $this->middleware(["auth:entreprise,web"]);
     }
+
+
+    public function getCookieValue(Request $request)
+    {
+        $cookieName = 'user_preference';
+        $defaultValue = 'default_value';
+
+        $cookieValue = $request->cookie($cookieName, $defaultValue);
+
+        // Use $cookieValue in your code
+        return $cookieValue;
+    }
+
+
     public function index()
     {
         return view("stagiaires.index", ["stagiaires" => stagiaire::all()]);
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.

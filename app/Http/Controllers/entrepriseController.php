@@ -7,7 +7,6 @@ use App\Models\Entretien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
 
 
 use Illuminate\Validation\ValidationException;
@@ -16,7 +15,7 @@ class EntrepriseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("auth")->except(['login', 'loginIndex']);
+        $this->middleware("auth:entreprise")->except(['login', 'loginIndex']);
     }
 
     public function index()
@@ -71,22 +70,17 @@ class EntrepriseController extends Controller
     }
     public function login(Request $request)
     {
-
         $credentials = [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
         ];
 
-
-
         if (Auth::guard('entreprise')->attempt($credentials)) {
-
             $user = Auth::guard('entreprise')->user();
             $user->status = 1;
             $user->save();
             return redirect()->route('entreprise.dashboard');
         }
-
 
         throw ValidationException::withMessages([
             'email' => [trans('auth.failed')],
@@ -96,6 +90,7 @@ class EntrepriseController extends Controller
     {
         return view("auth.login");
     }
+
     public function dashboard()
     {
         $entreprise = Auth::guard('entreprise')->user();
