@@ -55,9 +55,15 @@
                 @include('includes.header', ['menu' => '33'])
             @break
 
+            @case(35)
+
+            @include('includes.header', ['menu' => '35'])
+            
+            @break
+
             @case(4)
                 @include('includes.header', ['menu' => '4'])
-            @break
+            @bre
 
             @default
                 @include('includes.header', ['menu' => '0'])

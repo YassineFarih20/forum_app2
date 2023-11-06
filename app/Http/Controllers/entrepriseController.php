@@ -97,13 +97,16 @@ class EntrepriseController extends Controller
         $entrepriseName = $entreprise->nom;
         $logo = $entreprise->logo;
         $entrepriseReprsenatant = $entreprise->representant;
-
+    
         $appliedCandidates = Entretien::where('entreprise_id', $entreprise->id)
             ->with('stagiaire.etablissement')
             ->get();
-
-        return view('entreprises.dashboard', compact('appliedCandidates', 'entrepriseName', 'logo', 'entrepriseReprsenatant'));
+    
+        $menu = '35'; // Définissez la valeur de $menu selon vos besoins
+    
+        return view('entreprises.dashboard', compact('appliedCandidates', 'entrepriseName', 'logo', 'entrepriseReprsenatant', 'menu'));
     }
+    
 
     public function logout(Request $request)
     {

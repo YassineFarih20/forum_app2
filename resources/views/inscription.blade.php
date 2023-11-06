@@ -150,7 +150,7 @@
                     </form>
                     <form class="m-auto col-2" action="{{ route('viewCV') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="fileName" value={{ $stagiaire->cv }}>
+                        <input type="hidden" name="cv" value={{ $stagiaire->cv }}>
                         <button class="btn w-100 btn-info text-white">voir cv</button>
                     </form>
                     @endif

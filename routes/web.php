@@ -85,7 +85,6 @@ Route::post('/remarques/enregistrer', [RemarqueController::class, 'enregistrerRe
 Route::post('/viewCv', [StagiaireController::class, 'viewCv'])->name('viewCV');
 // Route::post('/cv/download', [AdminController::class, 'downloadCv'])->name('downloadCV');
 
-
 Route::resources([
     'stagiaires' => stagiaireController::class,
     'entreprises' => entrepriseController::class,

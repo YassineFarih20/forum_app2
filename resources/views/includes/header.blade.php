@@ -26,11 +26,14 @@
                 <a href="{{ route('contact') }}"
                     class="nav-item nav-link @if ($menu === '4') active @endif">Contact</a>
             </div>
-            @if ($menu !== '0')
-                <a href="{{ route('login') }}" id="espaceentr__btn"
-                    class="btn btn-primary rounded-0 py-4 col-12 col-lg-4 px-lg-3 d-lg-block">Espace
-                    Entreprise<i class="fa fa-arrow-right ms-3"></i></a>
-            @endif
+            @guest
+            <a href="{{ route('login') }}" id="espaceentr__btn" class="btn btn-primary rounded-0 py-4 col-12 col-lg-4 px-lg-3 d-lg-block">Espace Entreprise<i class="fa fa-arrow-right ms-3"></i></a>
+        @else
+            <form action="{{ route('logout.action') }}" method="POST">
+                @csrf
+                <button class="btn btn-danger rounded-0 py-4 col-12 " type="submit">Logout<i class="fa fa-arrow-right ms-3"></i></button>
+            </form>
+        @endguest
         </div>
     </nav>
     <!-- Navbar End -->

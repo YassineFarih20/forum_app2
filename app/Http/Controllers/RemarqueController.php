@@ -33,10 +33,18 @@ class RemarqueController extends Controller
             if ($remarque) {
               
                 $remarque->contenu = $request->input('contenu');
+                $notePosture = $request->input('note_posture');
+                $remarque->posture = $notePosture;
+                $noteCommunication = $request->input('note_communication');
+                $remarque->communication = $noteCommunication;
                 $remarque->save();
             } else {
                 $remarque = new Remarque();
                 $remarque->contenu = $request->input('contenu');
+                $notePosture = $request->input('note_posture');
+                $remarque->posture = $notePosture;
+                $noteCommunication = $request->input('note_communication');
+                $remarque->communication = $noteCommunication;
                 $remarque->entretien_id = $entretien->id;
                 $remarque->entreprise_id = auth('entreprise')->user()->id;
                 $remarque->save();

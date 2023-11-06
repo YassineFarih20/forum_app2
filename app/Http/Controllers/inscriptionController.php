@@ -27,20 +27,28 @@ class inscriptionController extends Controller
 
     public function setSession($cin, $dateNaissance)
     {
-        $stagiaire = Stagiaire::join('etablissements', 'etablissements.id', '=', 'stagiaires.etablissement_id')
-            ->select('stagiaires.*', 'etablissements.nom as efp')
-            ->where('cin', $cin)
-            ->where('dateNaissance', $dateNaissance)->first();
+        try {
+            $stagiaire = Stagiaire::join('etablissements', 'etablissements.id', '=', 'stagiaires.etablissement_id')
+                ->select('stagiaires.*', 'etablissements.nom as efp')
+                ->where('cin', $cin)
+                ->where('dateNaissance', $dateNaissance)
+                ->first();
 
-        $entretien = Stagiaire::join('entretiens as e', 'stagiaires.id', '=', 'e.stagiaire_id')
-            ->select('e.entreprise_id')
-            ->where('stagiaires.id', $stagiaire->id)
-            ->get();
+            if ($stagiaire) {
+                $entretien = Stagiaire::join('entretiens as e', 'stagiaires.id', '=', 'e.stagiaire_id')
+                    ->select('e.entreprise_id')
+                    ->where('stagiaires.id', $stagiaire->id)
+                    ->get();
 
-        $stagiaire ? Session::put('currentStagiaire', $stagiaire) : Session::forget('currentStagiaire');
-        $stagiaire ? Session::put('currentEntretien', $entretien) : Session::forget('currentEntretien');
+                Session::put('currentStagiaire', $stagiaire);
+                Session::put('currentEntretien', $entretien);
+                return;
+            }
+            return back()->withErrors(['err' => 'Veuillez vérifier vos informations']);
+        } catch (QueryException $e) {
+            return back()->withErrors(['err' => 'Veuillez vérifier vos informations']);
+        }
     }
-
     public function enregistrerInscription(Request $request)
     {
         $stagiaire = Session::get('currentStagiaire');
